@@ -35,6 +35,9 @@ ash_pop-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Popcorn WASM build artifacts
+/dist/
+
 # Database files
 *.db
 *.db-*

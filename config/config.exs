@@ -81,6 +81,9 @@ config :tailwind,
     cd: Path.expand("..", __DIR__)
   ]
 
+# Configure Popcorn
+config :popcorn, out_dir: "dist/wasm"
+
 # Configure Elixir's Logger
 config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
