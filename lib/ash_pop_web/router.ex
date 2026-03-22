@@ -18,6 +18,7 @@ defmodule AshPopWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/line-items", LineItemLive
   end
 
   # Other scopes may use custom stacks.

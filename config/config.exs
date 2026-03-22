@@ -47,7 +47,7 @@ config :spark,
 config :ash_pop,
   ecto_repos: [AshPop.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: []
+  ash_domains: [AshPop.Shop]
 
 # Configure the endpoint
 config :ash_pop, AshPopWeb.Endpoint,
