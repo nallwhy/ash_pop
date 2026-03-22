@@ -11,7 +11,16 @@ defmodule AshPop.MixProject do
       aliases: aliases(),
       deps: deps(),
       compilers: [:phoenix_live_view] ++ Mix.compilers(),
-      listeners: [Phoenix.CodeReloader]
+      listeners: [Phoenix.CodeReloader],
+      consolidate_protocols: Mix.env() != :dev,
+      usage_rules: usage_rules()
+    ]
+  end
+
+  defp usage_rules() do
+    [
+      file: "AGENTS.md",
+      usage_rules: [{~r/.*/, link: :markdown}]
     ]
   end
 
@@ -40,6 +49,13 @@ defmodule AshPop.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:tidewave, "~> 0.5", only: [:dev]},
+      {:ash, "~> 3.0"},
+      {:ash_phoenix, "~> 2.0"},
+      {:ash_sqlite, "~> 0.2"},
+      {:picosat_elixir, "~> 0.2"},
+      {:usage_rules, "~> 1.0", only: [:dev]},
+      {:sourceror, "~> 1.8", only: [:dev, :test]},
       {:phoenix, "~> 1.8.5"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.13"},
@@ -76,7 +92,7 @@ defmodule AshPop.MixProject do
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      test: ["ash.setup --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["compile", "tailwind ash_pop", "esbuild ash_pop"],
       "assets.deploy": [
@@ -84,7 +100,8 @@ defmodule AshPop.MixProject do
         "esbuild ash_pop --minify",
         "phx.digest"
       ],
-      precommit: ["compile --warnings-as-errors", "deps.unlock --unused", "format", "test"]
+      precommit: ["compile --warnings-as-errors", "deps.unlock --unused", "format", "test"],
+      "ash.setup": ["ash.setup", "run priv/repo/seeds.exs"]
     ]
   end
 end
